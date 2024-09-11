@@ -26,6 +26,8 @@ P.P.S.: Assume that your API will be used by a frontend developer to build front
 - Stack: [JDK 17](http://jdk.java.net/17/), Spring Boot 3.x, Lombok, H2, Caffeine Cache, SpringDoc OpenApi 2.x 
 - Run: `mvn spring-boot:run` in root directory.
 -----------------------------------------------------
+
+Swagger UI link
 [REST API documentation](http://localhost:8080/)  
 Test credentials:
 ```
