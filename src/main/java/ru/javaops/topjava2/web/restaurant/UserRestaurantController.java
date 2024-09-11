@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = UserRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Restaurant Controller")
 public class UserRestaurantController {
 
@@ -28,7 +28,7 @@ public class UserRestaurantController {
 
     @Operation(summary = "Get all restaurants with today dishes")
     @Cacheable("restaurantCache")
-    @GetMapping
+    @GetMapping(REST_URL + "/today-with-dishes")
     public List<Restaurant> getToday() {
         log.info("get today's restaurants");
         return repository.getAllByDateWithDishes(LocalDate.now());

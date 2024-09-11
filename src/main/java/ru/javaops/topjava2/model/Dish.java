@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.javaops.topjava2.HasId;
 import ru.javaops.topjava2.config.MoneyDeserializer;
@@ -19,10 +21,11 @@ import java.util.Objects;
 @Table(name = "dish")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Dish extends NamedEntity implements HasId {
 
     @Column(name = "created_at", nullable = false, columnDefinition = "timestamp default now()")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private LocalDate createdAt;
 
 
@@ -37,9 +40,6 @@ public class Dish extends NamedEntity implements HasId {
     @JoinColumn(name = "restaurant_id", nullable = false)
     @JsonIgnore
     private Restaurant restaurant;
-
-    public Dish() {
-    }
 
     public Dish(Integer id, String name, LocalDate createdAt, long price, Restaurant restaurant) {
         super(id, name);
@@ -65,19 +65,5 @@ public class Dish extends NamedEntity implements HasId {
                 ", price=" + price +
                 ", createdAt=" + createdAt +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Dish dish = (Dish) o;
-        return price == dish.price && Objects.equals(createdAt, dish.createdAt) && Objects.equals(restaurant, dish.restaurant);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), createdAt, price, restaurant);
     }
 }

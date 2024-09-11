@@ -4,9 +4,9 @@ spring:
     show-sql: true
     open-in-view: false
     # https://stackoverflow.com/a/67678945/548473
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       #  http://docs.jboss.org/hibernate/orm/5.3/userguide/html_single/Hibernate_User_Guide.html#configurations
       hibernate:
@@ -20,16 +20,13 @@ spring:
 
   datasource:
     # ImMemory
-    url: jdbc:h2:mem:topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/mem:topjava
-    # Absolute path
-    #    url: jdbc:h2:C:/projects/bootjava/db/topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/C:/projects/bootjava/db/topjava
+    url: jdbc:h2:mem:votingapp
+    #    tcp: jdbc:h2:tcp://localhost:9092/mem:votingapp
     # Relative path form current dir
-    #    url: jdbc:h2:./db/topjava
+    #    url: jdbc:h2:./db/votingapp
     # Relative path from home
-    #    url: jdbc:h2:~/topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/~/topjava
+    #    url: jdbc:h2:~/votingapp
+    #    tcp: jdbc:h2:tcp://localhost:9092/~/votingapp
     username: sa
     password:
 
@@ -40,9 +37,9 @@ spring:
     setter: none
     is-getter: none
 
-  # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
-  cache:
-    cache-names: userCache, restaurantCache
+#  # https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html#common-application-properties-cache
+#  cache:
+#    cache-names: userCache, restaurantCache
 
 logging:
   level:

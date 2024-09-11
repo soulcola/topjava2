@@ -63,14 +63,14 @@ class VoteServiceTest extends AbstractServiceTest {
     @Test
     void userVoteUpdateAfterDeadline() {
         assertThrows(IllegalArgumentException.class,
-                () -> service.createUpdateUserVote(VoteUtil.createTo(vote1), USER_ID, LocalDateTime.now(), DEADLINE_BEFORE_NOW));
+                () -> service.update(VoteUtil.createTo(vote1), USER_ID, LocalDateTime.now(), DEADLINE_BEFORE_NOW));
     }
 
     @Test
     void userVoteUpdateBeforeDeadline() {
         Vote updated = getUpdated();
         VoteTo updatedTo = VoteUtil.createTo(updated);
-        service.createUpdateUserVote(updatedTo, USER_ID, LocalDateTime.now(), DEADLINE_AFTER_NOW);
+        service.update(updatedTo, USER_ID, LocalDateTime.now(), DEADLINE_AFTER_NOW);
         VOTE_TO_MATCHER.assertMatch(VoteUtil.createTo(service.get(TODAY_VOTE_ID)), VoteUtil.createTo(getUpdated()));
     }
 

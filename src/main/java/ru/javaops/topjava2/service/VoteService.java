@@ -1,5 +1,6 @@
 package ru.javaops.topjava2.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class VoteService {
         repository.deleteExisted(id);
     }
 
+    @Transactional
     public Vote createUpdate(Vote vote) {
         if (!vote.isNew()) {
             repository.getExisted(vote.id());
@@ -48,18 +50,28 @@ public class VoteService {
         return repository.save(vote);
     }
 
-    public VoteTo createUpdateUserVote(VoteTo vote, int userId, LocalDateTime dateTime, LocalTime deadline) {
+    @Transactional
+    public VoteTo create(VoteTo vote, int userId, LocalDateTime dateTime) {
         Vote newVote = new Vote(userId, vote.getRestaurantId(), dateTime.toLocalDate());
-        repository.findByDateAndUserId(dateTime.toLocalDate(), userId)
-                .ifPresent(vote1 -> {
-                    checkVoteTime(dateTime, deadline);
-                    newVote.setId(vote1.getId());
-                    newVote.setUserId(userId);
-                });
-        restaurantRepository.getExisted(vote.getRestaurantId());
         createUpdate(newVote);
         return vote;
     }
+
+    @Transactional
+    public VoteTo update(VoteTo vote, int userId, LocalDateTime dateTime, LocalTime deadline) {
+        Vote newVote = new Vote(userId, vote.getRestaurantId(), dateTime.toLocalDate());
+        Vote existingVote = repository.findByDateAndUserId(dateTime.toLocalDate(), userId)
+                .orElseThrow(() -> new NotFoundException("Vote not found for userId=" + userId + " on date=" + dateTime.toLocalDate()));
+        checkVoteTime(dateTime, deadline);
+        newVote.setId(existingVote.getId());
+
+//        Проверка id ресторана, т.к. у нас в Vote не Restaurant, а id, и может засеттиться несуществующий
+        restaurantRepository.getExisted(vote.getRestaurantId());
+
+        createUpdate(newVote);
+        return vote;
+    }
+
 
     public static void checkVoteTime(LocalDateTime dateTime, LocalTime deadline) {
         if (dateTime.toLocalTime().isAfter(deadline)) {

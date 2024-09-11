@@ -21,7 +21,7 @@ class UserRestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getToday() throws Exception {
-        var action = perform(MockMvcRequestBuilders.get(REST_URL)
+        var action = perform(MockMvcRequestBuilders.get(REST_URL + "/today-with-dishes")
                 .with(userHttpBasic(user)))
                 .andExpect(status().isOk())
                 .andDo(print())

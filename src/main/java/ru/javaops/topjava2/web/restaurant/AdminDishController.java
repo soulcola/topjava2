@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +36,19 @@ public class AdminDishController {
     private final DishService service;
 
     @Operation(summary = "Get all dishes by restaurant id")
-    @GetMapping(REST_URL + "/by-restaurant")
+    @GetMapping(REST_URL + "/all-by-restaurant")
     public List<Dish> getAllByRestaurantId(@RequestParam int restaurantId) {
         log.info("get all dishes for restaurant {}", restaurantId);
         return repository.getAllByRestaurantId(restaurantId);
     }
+
+    @Operation(summary = "Get today dishes by restaurant id")
+    @GetMapping(REST_URL + "/today-by-restaurant")
+    public List<Dish> getTodayByRestaurantId(@RequestParam int restaurantId) {
+        log.info("get today dishes for restaurant {}", restaurantId);
+        return repository.getByDateAndRestaurantId(restaurantId, LocalDate.now());
+    }
+
 
     @Operation(summary = "Get dish by id")
     @GetMapping(REST_URL + "/{id}")
@@ -56,7 +65,6 @@ public class AdminDishController {
                                        @PathVariable int restaurantId) {
         log.info("Add dish {} to restaurant {}", dish, restaurantId);
         checkNew(dish);
-        dish.setCreatedAt(LocalDate.now());
         var created = service.save(dish, restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")

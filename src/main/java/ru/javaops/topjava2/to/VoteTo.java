@@ -7,13 +7,13 @@ import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
 @Data
-public class VoteTo implements Serializable {
+public class VoteTo {
 
-    private int RestaurantId;
+    private int restaurantId;
 
     @Positive
     @ConstructorProperties({"restaurantId"})
     public VoteTo(int restaurantId) {
-        RestaurantId = restaurantId;
+        this.restaurantId = restaurantId;
     }
 }
