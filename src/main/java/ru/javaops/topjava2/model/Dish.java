@@ -22,7 +22,7 @@ import java.util.Objects;
 public class Dish extends NamedEntity implements HasId {
 
     @Column(name = "created_at", nullable = false, columnDefinition = "timestamp default now()")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private LocalDate createdAt;
 
 

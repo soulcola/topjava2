@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.topjava2.error.NotFoundException;
 import ru.javaops.topjava2.model.Dish;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,10 @@ public interface DishRepository extends BaseRepository<Dish> {
 
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId")
     List<Dish> getAllByRestaurantId(@Param("restaurantId") int restaurantId);
+
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId AND d.createdAt=:createdAt")
+    List<Dish> getByDateAndRestaurantId(@Param("restaurantId") int restaurantId,
+                                        @Param("createdAt") LocalDate createdAt);
 
     default Dish getByIdAndRestaurantId(int id, int restaurantId) {
         return findByIdAndRestaurantID(id, restaurantId)
